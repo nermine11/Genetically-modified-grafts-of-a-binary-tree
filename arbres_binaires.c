@@ -1,4 +1,15 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "arbres_binaires.h"
+
+
+
+typedef struct _noeud {
+    char *s ;
+    struct _noeud * fg , * fd ;
+} Noeud , * Arbre ;
+
 
 
 Arbre construire_arbre_binaire(char * mot , const char separateur[3]){
