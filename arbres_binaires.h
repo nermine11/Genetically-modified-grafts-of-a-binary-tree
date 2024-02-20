@@ -1,3 +1,6 @@
+#ifndef ARBRES_BINAIRES_H
+#define ARBRES_BINAIRES_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -16,3 +19,5 @@ Arbre cree_A_2(void);
 Arbre cree_A_3(void);
 
 Arbre construire_arbre_binaire(char * mot , const char separateur[3]);
+
+#endif
