@@ -8,7 +8,7 @@
 typedef struct _noeud Noeud, *Arbre;
 
 Noeud * alloue_noeud(char * s);
-void liberer(Arbre * A) 
+void liberer(Arbre * A);
 Arbre cree_A_1(void);
 Arbre cree_A_2(void);
 Arbre cree_A_3(void);

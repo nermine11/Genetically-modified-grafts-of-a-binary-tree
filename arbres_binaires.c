@@ -7,7 +7,7 @@
 struct _noeud {
     char *val ;
     struct _noeud * fg , * fd ;
-} ;
+};
 
 
 
@@ -20,7 +20,7 @@ Noeud * alloue_noeud(char * s){
     int len = strlen(s);
     new_node->val = (char *) malloc((len +1) * sizeof(char)); // len +1 pour inclure le null terminator('/0')
     if(!(new_node->val)){
-        fprintf(stderr, "pb wiht malloc val in alloue_noeud");
+        fprintf(stderr, "pb with malloc val in alloue_noeud");
         free(new_node);
         return NULL;
     }
@@ -29,6 +29,18 @@ Noeud * alloue_noeud(char * s){
 }
 
 
+void liberer(Arbre * A){
+    if(*a){
+
+        liberer(&((*a)->fg));
+        liberer(&((*a)->fd));
+        free(*a);
+        (*a) = NULL;
+    }
+    
+
+
+}
 
 
 /*Arbre construire_arbre_binaire(char * mot , const char separateur[3]){
