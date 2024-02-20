@@ -4,14 +4,34 @@
 #include "arbres_binaires.h"
 
 
-typedef struct _noeud {
-    char *s ;
+struct _noeud {
+    char *val ;
     struct _noeud * fg , * fd ;
-} Noeud , * Arbre ;
+} ;
 
 
 
-Arbre construire_arbre_binaire(char * mot , const char separateur[3]){
+Noeud * alloue_noeud(char * s){
+    Noeud* new_node = (Noeud *) calloc(1, sizeof(Noeud));
+    if(!new_node){
+        fprintf(stderr, "pb wiht malloc new_node in alloue_noeud");
+        return NULL;
+    }
+    int len = strlen(s);
+    new_node->val = (char *) malloc((len +1) * sizeof(char)); // len +1 pour inclure le null terminator('/0')
+    if(!(new_node->val)){
+        fprintf(stderr, "pb wiht malloc val in alloue_noeud");
+        free(new_node);
+        return NULL;
+    }
+    strcpy(new_node->val, s);
+    return new_node;
+}
+
+
+
+
+/*Arbre construire_arbre_binaire(char * mot , const char separateur[3]){
     mot = strtok(NULL , separateur);
     if(mot){
        
@@ -66,4 +86,5 @@ Arbre cree_A_3(void){
     mot = strtok(code , separateur); 
     return construire_arbre_binaire(mot , separateur);
 }
-//main
+
+*/
