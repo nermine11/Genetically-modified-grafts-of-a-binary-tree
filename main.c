@@ -1,3 +1,5 @@
+#include "arbres_binaire.h"
+
 void ecrireDebut(FILE *f){
     fprintf(f, "digraph arbre {\n");
     fprintf(f, "\tnode[ shape = record , height = .1 ]\n");
