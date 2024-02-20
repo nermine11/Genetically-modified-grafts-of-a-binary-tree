@@ -1,3 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define  MAX_MOT 100
+#define NOEUD_EXIST(tokens) (tokens && (strcmp(tokens , "1") == 0)? 1: 0 )
+#define NOEUD_VIDE(tokens) (tokens && (strcmp(tokens , "0") == 0)? 1: 0 )
+
+typedef struct _noeud {
+    char *s ;
+    struct _noeud * fg , * fd ;
+} Noeud , * Arbre ;
+
+
+Arbre construire_arbre_binaire(char * mot , const char separateur[3]){
+    mot = strtok(NULL , separateur);
+    if(mot){
+       
+        if(NOEUD_VIDE(mot))
+            return NULL;
+        
+        if(NOEUD_EXIST(mot))
+            mot = strtok(NULL , separateur);
+
+        if(!mot)
+            return NULL;
+        Arbre a = alloue_Noeud(mot);
+    
+        if(!a){
+            liberer_arbre(&a);
+            exit(EXIT_FAILURE);
+
+        }
+        a->fg = construire_arbre_binaire(mot , separateur);
+        a->fd = construire_arbre_binaire(mot , separateur);
+        
+       return a;
+   }
+
+    return NULL;
+}
 Arbre cree_A_1(void){
     char ligne[MAX_MOT] , *mot;
     int noeud;
