@@ -4,7 +4,6 @@
 #include "arbres_binaires.h"
 
 
-
 typedef struct _noeud {
     char *s ;
     struct _noeud * fg , * fd ;
