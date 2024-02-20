@@ -1,14 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#define  MAX_MOT 100
-#define NOEUD_EXIST(tokens) (tokens && (strcmp(tokens , "1") == 0)? 1: 0 )
-#define NOEUD_VIDE(tokens) (tokens && (strcmp(tokens , "0") == 0)? 1: 0 )
-
-typedef struct _noeud {
-    char *s ;
-    struct _noeud * fg , * fd ;
-} Noeud , * Arbre ;
+#include "arbres_binaires.h"
 
 
 Arbre construire_arbre_binaire(char * mot , const char separateur[3]){
