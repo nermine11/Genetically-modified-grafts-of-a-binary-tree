@@ -10,7 +10,6 @@ struct _noeud {
 };
 
 
-
 Noeud * alloue_noeud(char * s){
     Noeud* new_node = (Noeud *) calloc(1, sizeof(Noeud));
     if(!new_node){
@@ -28,18 +27,13 @@ Noeud * alloue_noeud(char * s){
     return new_node;
 }
 
-
 void liberer(Arbre * A){
     if(*a){
-
         liberer(&((*a)->fg));
         liberer(&((*a)->fd));
         free(*a);
         (*a) = NULL;
     }
-    
-
-
 }
 
 
