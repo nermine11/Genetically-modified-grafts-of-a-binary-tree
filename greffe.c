@@ -20,7 +20,7 @@ static greffe(Arbre n, Arbre g){
         copie(&(g->fd), n->fd);
     greffe(n, g->fg);
     greffe(n, g->fd);
-}
+} 
 
 static void expansion_aux(Arbre *n, Arbre b){
     copie(&g, b);
