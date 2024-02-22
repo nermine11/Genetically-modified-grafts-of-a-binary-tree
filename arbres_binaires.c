@@ -37,6 +37,51 @@ void liberer(Arbre * A){
 }
 
 
+Arbre cree_A_2(void){
+    Arbre root = alloue_noeud("Anémone");
+    if(!root){
+        fprintf(stderr, "pb avec malloc in cree_A_2");
+        return NULL;
+    }
+    root->fg = alloue_noeud("Camomille");
+    if(!root->fg){
+        fprintf(stderr, "pb avec malloc in cree_A_2");
+        free(root);
+        return NULL
+    }
+    root->fd = alloue_noeud("Camomille");
+    if(!root->fd){
+        fprintf(stderr, "pb avec malloc in cree_A_2");
+        free(root);
+        return NULL
+    }
+    root ->fd->fg = alloue_noeud("Dahlia");
+    if(!root->fd->fg){
+        fprintf(stderr, "pb avec malloc in cree_A_2");
+        free(root);
+        return NULL
+    }
+    root->fd->fg->fd  = alloue_noeud("Camomille");
+    if(!root->fd->fg->fd){
+        fprintf(stderr, "pb avec malloc in cree_A_2");
+        free(root);
+        return NULL
+    }
+    root->fd->fg->fd->fg = alloue_noeud("Iris");
+    if(!root->fd->fg->fd->fg){
+        fprintf(stderr, "pb avec malloc in cree_A_2");
+        free(root);
+        return NULL
+    }
+    root->fd->fg->fd->fd = alloue_noeud("Jasmin");
+    if(!root->fd->fg->fd->fd){
+        fprintf(stderr, "pb avec malloc in cree_A_2");
+        free(root);
+        return NULL
+    }
+}
+
+
 /*Arbre construire_arbre_binaire(char * mot , const char separateur[3]){
     mot = strtok(NULL , separateur);
     if(mot){
@@ -65,6 +110,7 @@ void liberer(Arbre * A){
     return NULL;
 }
 Arbre cree_A_1(void){
+
     char ligne[MAX_MOT] , *mot;
     int noeud;
     const char separateur[3] = "\n ";
