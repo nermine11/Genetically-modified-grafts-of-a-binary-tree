@@ -9,6 +9,12 @@ struct _noeud {
     struct _noeud * fg , * fd ;
 };
 
+typedef struct{
+    char *code;
+    int taille_max;
+}Memo;
+
+
 
 Noeud * alloue_noeud(char * s){
     Noeud* new_node = (Noeud *) calloc(1, sizeof(Noeud));
@@ -36,16 +42,91 @@ void liberer(Arbre * A){
     }
 }
 
+int creation_Memo(Memo *p){
+    p->code = (char *)calloc( MAX_MOT, sizeof(char));
+    if(p->code){
+        p->taille_max = MAX_MOT;
+        return 1;
 
-/*Arbre construire_arbre_binaire(char * mot , const char separateur[3]){
-    mot = strtok(NULL , separateur);
+    }
+    fprintf(stderr ,"il s'est produit une erreur\n");
+
+    free(p->code);
+    return 0;
+}
+
+int  Copier_Chiffre(char *mot , Memo * p , int i){
+    int copier = 0;
+        for(;*mot != '\0';mot++)
+        {
+           
+            if(NOEUD_VIDE(*mot)){
+                strcat(p->code , "0");
+                strcat(p->code , "-");
+                copier = 1;
+            }
+            if(NOEUD_EXIST(*mot)){
+                strcat(p->code , "1");
+                strcat(p->code , "-");
+                
+                copier = 1;
+
+            }
+                
+            
+
+        }
+    return copier;
+      
+
+}
+
+
+int creation_code_adapter_arbre(Memo * p , char code_atester[MAX_MOT][MAX_MOT]){
+    char ligne[MAX_MOT] , mot_tmp[MAX_MOT];
+    int i = 0;
+    fgets(ligne , MAX_MOT , stdin);
+  
+    char * mot = strtok(ligne , "\"");
+    while (mot)
+    {   
+
+        if(!TEST_MOT(mot , code_atester[i])){
+            printf("le mot %s n'est pas present dans le code souhaité %d %s\n", mot , i , code_atester[i]);
+            free(p->code);
+            return 0;
+        }
+
+            if(!Copier_Chiffre(mot , p , i)){
+                mot[strlen(mot) - 1] = '\0';
+                mot[strlen(mot) - 1] = '\0';
+                strcat(p->code , mot);
+                strcat(p->code , "-");
+                
+        } 
+        
+       
+        i++;
+       mot = strtok(NULL , "\"");
+    }
+    
+    return 1;
+}
+
+
+
+
+
+
+Arbre construire_arbre_binaire(char * mot){
+    mot = strtok(NULL , "-");
     if(mot){
        
-        if(NOEUD_VIDE(mot))
+        if(NOEUD_VIDE(*mot))
             return NULL;
         
-        if(NOEUD_EXIST(mot))
-            mot = strtok(NULL , separateur);
+        if(NOEUD_EXIST(*mot))
+            mot = strtok(NULL , "-");
 
         if(!mot)
             return NULL;
@@ -56,41 +137,49 @@ void liberer(Arbre * A){
             exit(EXIT_FAILURE);
 
         }
-        a->fg = construire_arbre_binaire(mot , separateur);
-        a->fd = construire_arbre_binaire(mot , separateur);
+        a->fg = construire_arbre_binaire(mot);
+        a->fd = construire_arbre_binaire(mot);
         
        return a;
    }
 
     return NULL;
 }
+
 Arbre cree_A_1(void){
+    Memo p;
     char ligne[MAX_MOT] , *mot;
-    int noeud;
-    const char separateur[3] = "\n ";
-    char code[] = "1 arbre\n 1 binaire\n 0 0 1 ternaire\n 0 0\0"; 
-    mot = strtok(code , separateur); 
-    return construire_arbre_binaire(mot , separateur);
-}
+    char code_atester[MAX_MOT][MAX_MOT] = {"1 ","arbre\\n"," 1 ","binaire\\n", " 0 0 1 " ,"ternaire\\n", " 0 0\n"}; 
+    creation_Memo(&p);
+    if(creation_code_adapter_arbre(&p , code_atester)){
+        char * mot = strtok(p.code , "-");
+        return construire_arbre_binaire(mot);
+    }
 
+
+}
 Arbre cree_A_2(void){
+    Memo p;
     char ligne[MAX_MOT] , *mot;
     int noeud;
-    const char separateur[3] = "\n ";
-    char code[] = "1 Anémone\n 1 Camomille\n 0 0 1 Camomille\n 1 Dahlia\n 0 1 Camomille\n 1 Iris\n 0 0 1 Jasmin\n 0 0\0"; 
-    mot = strtok(code , separateur); 
-    return construire_arbre_binaire(mot , separateur);
+    char code_atester[MAX_MOT][MAX_MOT] = {"1 " , "Anémone\\n" ," 1 " ,"Camomille\\n", " 0 0 1 ", "Camomille\\n", " 1 ", "Dahlia\\n", " 0 1 ", "Camomille\\n", " 1 " ,"Iris\\n" ," 0 0 1 " ,"Jasmin\\n", " 0 0\n"};
+    creation_Memo(&p);
+    if(creation_code_adapter_arbre(&p , code_atester)){
+        char * mot = strtok(p.code , "-");
+        return construire_arbre_binaire(mot);
+    }
 }
-
-
 
 Arbre cree_A_3(void){
+    Memo p;
     char ligne[MAX_MOT] , *mot;
     int noeud;
-    const char separateur[3] = "\n ";
-    char code[] = "1 IntelCorei9\n 1 AppleM3Max\n 0 1 AMDRyzen9\n 1 IntelCorei9\n 0 0 0 1 IntelCorei9\n 1 IntelCorei9\n 0 0 0\0"; 
-    mot = strtok(code , separateur); 
-    return construire_arbre_binaire(mot , separateur);
+    char code_atester[MAX_MOT][MAX_MOT] = {"1 ", "Intel Core i9\\n", " 1 " , "Apple M3 Max\\n", " 0 1 ", "AMD Ryzen 9\\n", " 1 " , "Intel Core i9\\n", " 0 0 0 1 ", "Intel Core i9\\n", " 1 ", "Intel Core i9\\n", " 0 0 0\n"}; 
+    creation_Memo(&p);
+    if(creation_code_adapter_arbre(&p , code_atester)){
+        char * mot = strtok(p.code , "-");
+        return construire_arbre_binaire(mot);
+    }
 }
 
-*/
+
