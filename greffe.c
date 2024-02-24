@@ -38,15 +38,18 @@ static int greffe(Arbre *n, Arbre b){
         }
         return 1;
     }
-    return greffe(n, g->fg);
-    return greffe(n, g->fd);
+    greffe(n, g->fg);
+    greffe(n, g->fd);
     *n = g;
     return 1;
 } 
 
 int expansion(Arbre * a, Arbre b){
 
-
+    if (!(*a) || !b){
+        fprintf(stderr, "*a ou b sont vides dans expansion()");
+        return 0;
+    }   
 
 }
 

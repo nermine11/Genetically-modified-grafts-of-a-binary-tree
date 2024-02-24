@@ -13,5 +13,4 @@ int expansion(Arbre * a, Arbre b);
 
 
 
-
 #endif
