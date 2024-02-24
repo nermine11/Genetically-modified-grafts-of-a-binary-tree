@@ -8,22 +8,47 @@
 
 
 
-
-static greffe(Arbre n, Arbre g){
-    if(!n || !g)
-        return;
-    if(!(n->fg) && !(n->fd))
-        return;
-    if(!(g->fg)) // && n->fd?
-        copie(&(g->fg), n->fd);
-    if(!(g->fd))
-        copie(&(g->fd), n->fd);
-    greffe(n, g->fg);
-    greffe(n, g->fd);
+// greffe de n sur g
+// renvoie 0 en cas d'erreur sinon 1
+static int greffe(Arbre *n, Arbre b){
+    Arbre g;
+    if (!(copie(&g, b))){
+        fprintf(stderr, "erreur dans copie dans greffe()");
+        return 0;
+    }
+    if(!(*n) || !g){
+        fprintf(stderr, "n ou g sont vides dans greffe()");
+        return 0;
+    }
+    if(!((*n)->fg) && !((*n)->fd)){
+        *n = g;
+        return 1;
+    }
+    if(!(g->fg) && (*n)->fg){
+        if(!(copie(&(g->fg), (*n)->fg))){
+            fprintf(stderr, "erreur dans copie dans greffe");
+            return 0;
+        }
+        return 1;
+    }
+    if(!(g->fd) && (*n)->fd){ 
+        if(!(copie(&(g->fd), (*n)->fd))){
+            fprintf(stderr, "erreur dans copie dans greffe");
+            return 0;
+        }
+        return 1;
+    }
+    return greffe(n, g->fg);
+    return greffe(n, g->fd);
+    *n = g;
+    return 1;
 } 
 
-static void expansion_aux(Arbre *n, Arbre b){
-    copie(&g, b);
-    greffe(*n, g);
-    *n = g;
+int expansion(Arbre * a, Arbre b){
+
+
+
 }
+
+
+

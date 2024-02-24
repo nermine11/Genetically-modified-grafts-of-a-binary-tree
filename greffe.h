@@ -5,7 +5,7 @@
 
 
 int copie(Arbre * dest, Arbre source);
-int expansion(Arbre * A, Arbre B);
+int expansion(Arbre * a, Arbre b);
 
 
 
