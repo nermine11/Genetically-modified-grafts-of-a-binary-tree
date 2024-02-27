@@ -33,10 +33,11 @@ Noeud * alloue_noeud(char * s){
     return new_node;
 }
 
-void liberer(Arbre * A){
+void liberer(Arbre * a){
     if(*a){
         liberer(&((*a)->fg));
         liberer(&((*a)->fd));
+        free((*a)->val);
         free(*a);
         (*a) = NULL;
     }

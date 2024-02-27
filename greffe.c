@@ -4,7 +4,6 @@
 #include "greffe.h"
 #include "arbres_binares.h"
 
-
 int copie(Arbre * dest, Arbre source){
     if (!source)
         return 1;
@@ -25,6 +24,7 @@ int copie(Arbre * dest, Arbre source){
     }
     return 1;
 }
+
 
 // greffe de n sur g
 // renvoie 0 en cas d'erreur sinon 1
