@@ -1,6 +1,7 @@
 #ifndef GREFFE_H
 #define GREFFE_H_H
 
+#include "arbres_binares.h"
 
 
 

@@ -8,7 +8,16 @@
 #define MOT_VIDE(tokens) ((strcmp(tokens , " ") == 0)? 1: 0 )
 #define TEST_MOT(saisir , codage)((strcmp(saisir , codage) == 0)? 1: 0 )
 
-typedef struct _noeud Noeud, *Arbre;
+typedef struct _noeud {
+    char *val ;
+    struct _noeud * fg , * fd ;
+}Noeud, *Arbre;
+
+typedef struct{
+    char *code;
+    int taille_max;
+}Memo;
+
 
 Noeud * alloue_noeud(char * s);
 void liberer(Arbre * A);

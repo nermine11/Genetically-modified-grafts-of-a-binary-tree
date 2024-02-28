@@ -4,16 +4,6 @@
 #include "arbres_binaires.h"
 
 
-struct _noeud {
-    char *val ;
-    struct _noeud * fg , * fd ;
-};
-
-typedef struct{
-    char *code;
-    int taille_max;
-}Memo;
-
 
 
 Noeud * alloue_noeud(char * s){
