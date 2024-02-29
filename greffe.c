@@ -4,7 +4,6 @@
 #include "greffe.h"
 
 
-
 //O(n * len), n : nombre de noeuds dans source, len : longeur de s
 // we traverse each node exactly once so it is proportional to n
 // for each node we may need to allocate memory
@@ -48,12 +47,13 @@ int copie(Arbre * dest, Arbre source){
 
 
 
+
 void ajout_fg(Arbre *g, Arbre a){
 
     if(!a || !(*g))
-        return;
+        return  ;
     if(!((*g)->fg) && a->fg){
-        copie(&((*g)->fg), a->fg );
+        copie(&((*g)->fg), a->fg);
         return;
     }
 
@@ -79,11 +79,11 @@ void ajout_fd(Arbre *g, Arbre a){
 
 
 void greffe(Arbre * a, Arbre b){
-
     ajout_fg(&b, *a);
     ajout_fd(&b, *a);
     copie(a,b);
 }
+
 
 
 void expansion(Arbre* a, Arbre b){
@@ -96,7 +96,11 @@ void expansion(Arbre* a, Arbre b){
         Arbre g = NULL;
         copie(&g, b);
         greffe(a,g);
-        
+        return;
     }
-
 }
+
+
+
+
+
