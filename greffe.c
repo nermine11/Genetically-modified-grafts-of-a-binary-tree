@@ -48,59 +48,70 @@ int copie(Arbre * dest, Arbre source){
 
 
 
-void ajout_fg(Arbre *g, Arbre a){
+
+int ajout_fg(Arbre *g, Arbre a){
 
     if(!a || !(*g))
-        return  ;
+        return 0 ;
     if(!((*g)->fg) && a->fg){
-        copie(&((*g)->fg), a->fg);
-        return;
+        if(copie(&((*g)->fg), a->fg ));
+            return 1;
+        return 0;
     }
 
     ajout_fg(&((*g)->fg),a);
     ajout_fg(&((*g)->fd),a);
-
+    return 1;
 }
 
 
-void ajout_fd(Arbre *g, Arbre a){
 
-    if(!a || !(*g))
-        return;
+int ajout_fd(Arbre *g, Arbre a){
+
+     if(!a || !(*g))
+        return 0 ;
     if(!((*g)->fd) && a->fd){
-        copie(&((*g)->fd), a->fd );
-        return;
+        if(copie(&((*g)->fd), a->fd ))
+            return 1;
+        return 0;
     }
 
-    ajout_fd(&((*g)->fd),a);
-    ajout_fd(&((*g)->fg),a);
+    ajout_fd(&((*g)->fd), a);
+    ajout_fd(&((*g)->fg), a);
+    return 1;
 
 }
 
 
-void greffe(Arbre * a, Arbre b){
-    ajout_fg(&b, *a);
-    ajout_fd(&b, *a);
-    copie(a,b);
+
+int greffe(Arbre * a, Arbre b){
+
+    if(!(ajout_fg(&b, *a)))
+        return 0;
+    if(!(ajout_fd(&b, *a)))
+        return 0;
+    if(!(copie(a,b)))
+        return 0;
+    return 1;
 }
 
 
-
-void expansion(Arbre* a, Arbre b){
+int expansion(Arbre* a, Arbre b){
 
     if(!(*a))
-        return;
+        return 0;
     expansion(&((*a)->fg), b);
     expansion(&((*a)->fd), b);
     if(!(strcmp((*a)->val, b->val))){
         Arbre g = NULL;
-        copie(&g, b);
-        greffe(a,g);
-        return;
+        if (!(copie(&g, b)))
+            return 0;  
+        if(!(greffe(a,g)))
+            return 0;
+        return 1;
     }
+    return 1;
+
 }
-
-
-
 
 
