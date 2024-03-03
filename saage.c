@@ -27,7 +27,7 @@ Arbre saisir_arbre_binaire(){
 }
 
 
-int  Copier_Chiffre(char *mot , Memo * p , int i){
+int  Copier_Chiffre(char *mot , Memo * p){
     int copier = 0 , val = 0;
 
     if(!strstr(mot, "\\n")){
@@ -83,7 +83,7 @@ int verification_mot(char * mot){
 
 int creation_code_adapter_arbre(Memo * p){
     char ligne[MAX_MOT] ;
-    int i = 0 , value_copie;
+    int  value_copie;
     if(!fgets(ligne , MAX_MOT , stdin)){
         fprintf(stderr , "il y a eu un problème\n");
         return 0;
@@ -99,7 +99,7 @@ int creation_code_adapter_arbre(Memo * p){
     while (mot)
     {   
 
-        value_copie = Copier_Chiffre(mot , p , i);
+        value_copie = Copier_Chiffre(mot , p);
         if(value_copie == -1){
             fprintf(stderr , "le code de cette arbre est incorrecte, je pense que vous avez saisi un mauvais chiffre\n");
             return 0;
@@ -119,7 +119,7 @@ int creation_code_adapter_arbre(Memo * p){
         
 
        
-        i++;
+    
        mot = strtok(NULL , "\"");
     }
     
