@@ -14,6 +14,18 @@ int creation_Memo(Memo *p){
     return 0;
 }
 
+Arbre saisir_arbre_binaire(){
+    Memo p;
+    Arbre A;
+    creation_Memo(&p);
+    creation_code_adapter_arbre(&p);
+    char * mot = strtok(p.code , "*");
+    printf("mot : %s\n", mot);
+    A = construire_arbre_binaire(mot);
+    free(p.code);
+    return A;
+}
+
 
 int  Copier_Chiffre(char *mot , Memo * p , int i){
     int copier = 0 , val = 0;
