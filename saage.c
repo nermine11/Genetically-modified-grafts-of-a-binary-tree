@@ -1,5 +1,7 @@
 #include "saage.h"
-
+//1 "Intel Core i9\n" 1 "Apple M3 Max\n" 0 1 "AMD Ryzen 9\n" 1 "Intel Core i9\n" 0 0 0 1 "Intel Core i9\n" 1 "Intel Core i9\n" 0 0 0
+//1 "arbre\n" 1 "binaire\n" 0 0 1 "ternaire\n" 0 0
+//1 "Anémone\n" 1 "Camomille\n" 0 0 1 "Camomille\n" 1 "Dahlia\n" 0 1 "Camomille\n" 1 "Iris\n" 0 0 1 "Jasmin\n" 0 0
 
 int creation_Memo(Memo *p){
     p->code = (char *)calloc( MAX_MOT, sizeof(char));
