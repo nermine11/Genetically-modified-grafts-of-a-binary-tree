@@ -20,6 +20,7 @@ int creation_Memo(Memo *p);
 int verification_mot(char * mot);
 int creation_code_adapter_arbre(Memo * p);
 Arbre construire_arbre_binaire(char * mot);
+Arbre saisir_arbre_binaire();
 void affiche(Arbre A , FILE * out, int nombre_espace );
 int test_format(char * nom_de_fichier );
 int serialise(char * nom_de_fichier, Arbre A);
