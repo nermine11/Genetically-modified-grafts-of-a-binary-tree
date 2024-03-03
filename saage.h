@@ -15,7 +15,7 @@ typedef struct{
 }Memo;
 
 
-int  Copier_Chiffre(char *mot , Memo * p , int i);
+int  Copier_Chiffre(char *mot , Memo * p);
 int creation_Memo(Memo *p);
 int verification_mot(char * mot);
 int creation_code_adapter_arbre(Memo * p);
