@@ -1,35 +1,6 @@
 #include "saage.h"
-//1 "Intel Core i9\n" 1 "Apple M3 Max\n" 0 1 "AMD Ryzen 9\n" 1 "Intel Core i9\n" 0 0 0 1 "Intel Core i9\n" 1 "Intel Core i9\n" 0 0 0
-//1 "arbre\n" 1 "binaire\n" 0 0 1 "ternaire\n" 0 0
-//1 "Anémone\n" 1 "Camomille\n" 0 0 1 "Camomille\n" 1 "Dahlia\n" 0 1 "Camomille\n" 1 "Iris\n" 0 0 1 "Jasmin\n" 0 0
 
-int creation_Memo(Memo *p){
-    p->code = (char *)calloc( MAX_MOT, sizeof(char));
-    if(p->code){
-        p->taille_max = MAX_MOT;
-        return 1;
-
-    }
-    fprintf(stderr ,"il s'est produit une erreur\n");
-
-    free(p->code);
-    return 0;
-}
-
-Arbre saisir_arbre_binaire(){
-    Memo p;
-    Arbre A;
-    creation_Memo(&p);
-    creation_code_adapter_arbre(&p);
-    char * mot = strtok(p.code , "*");
-    printf("mot : %s\n", mot);
-    A = construire_arbre_binaire(mot);
-    free(p.code);
-    return A;
-}
-
-
-int  Copier_Chiffre(char *mot , Memo * p){
+int  Copier_Chiffre(char *mot , Memo * p , int i){
     int copier = 0 , val = 0;
 
     if(!strstr(mot, "\\n")){
@@ -85,7 +56,7 @@ int verification_mot(char * mot){
 
 int creation_code_adapter_arbre(Memo * p){
     char ligne[MAX_MOT] ;
-    int  value_copie;
+    int i = 0 , value_copie;
     if(!fgets(ligne , MAX_MOT , stdin)){
         fprintf(stderr , "il y a eu un problème\n");
         return 0;
@@ -101,7 +72,7 @@ int creation_code_adapter_arbre(Memo * p){
     while (mot)
     {   
 
-        value_copie = Copier_Chiffre(mot , p);
+        value_copie = Copier_Chiffre(mot , p , i);
         if(value_copie == -1){
             fprintf(stderr , "le code de cette arbre est incorrecte, je pense que vous avez saisi un mauvais chiffre\n");
             return 0;
@@ -121,15 +92,38 @@ int creation_code_adapter_arbre(Memo * p){
         
 
        
-    
+        i++;
        mot = strtok(NULL , "\"");
     }
     
-    printf("code %s\n", p->code);
+   
     return 1;
 }
 
+int creation_Memo(Memo *p){
+    p->code = (char *)calloc( MAX_MOT, sizeof(char));
+    if(p->code){
+        p->taille_max = MAX_MOT;
+        return 1;
 
+    }
+    fprintf(stderr ,"il s'est produit une erreur\n");
+
+    free(p->code);
+    return 0;
+}
+
+
+Arbre saisir_arbre_binaire(){
+    Memo p;
+    Arbre A;
+    creation_Memo(&p);
+    creation_code_adapter_arbre(&p);
+    char * mot = strtok(p.code , "*");
+    A = construire_arbre_binaire(mot);
+    free(p.code);
+    return A;
+}
 
 
 
@@ -148,10 +142,10 @@ Arbre construire_arbre_binaire(char * mot){
 
         if(!mot)
             return NULL;
-        Arbre a = alloue_Noeud(mot);
+        Arbre a = alloue_noeud(mot);
     
         if(!a){
-            liberer_arbre(&a);
+            liberer(&a);
             exit(EXIT_FAILURE);
 
         }
@@ -250,9 +244,8 @@ int serialise(char * nom_de_fichier, Arbre A){
 
 
 int deserialise(char * nom_de_fichier, Arbre * A){// choisir la séparation en fonction du texte la B.saage ne marche pas 
-    int cmpt = 0; 
-    char ligne[MAX_MOT] , *direction , *mot;
-    int taille_chaine = 0; 
+
+    char ligne[MAX_MOT] ,  *mot;
     FILE * out = fopen ( nom_de_fichier , "r") ;
 
     if(!out){
@@ -263,7 +256,7 @@ int deserialise(char * nom_de_fichier, Arbre * A){// choisir la séparation en f
     creation_Memo(&p);
 
     for( ; fgets(ligne , MAX_MOT , out) ; ){
-        direction = strtok(ligne , ":\n");
+        strtok(ligne , ":\n");
         mot = strtok(NULL , ":\n");
         if(NOEUD_STRING_VIDE(mot)){
             strcat(p.code , "*0");
