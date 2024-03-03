@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 #include "arbres_binaires.h"
 
 
@@ -33,6 +31,23 @@ void liberer(Arbre * a){
     }
 }
 
+Arbre cree_A_1(void){
+   Arbre a = alloue_Noeud("arbre");
+   if(!a)
+    return NULL;
+   a->fg = alloue_Noeud("binaire");
+   if(!a->fg){
+        liberer_arbre(&a);
+        return NULL;
+   }
+   a->fd = alloue_Noeud("ternaire");
+   if(!a->fd){
+        liberer_arbre(&a);
+        return NULL;
+   }
+   return a;
+}
+
 
 Arbre cree_A_2(void){
     Arbre root = alloue_noeud("Anémone");
@@ -44,38 +59,75 @@ Arbre cree_A_2(void){
     if(!root->fg){
         fprintf(stderr, "pb avec malloc in cree_A_2");
         free(root);
-        return NULL
+        return NULL;
     }
     root->fd = alloue_noeud("Camomille");
     if(!root->fd){
         fprintf(stderr, "pb avec malloc in cree_A_2");
         free(root);
-        return NULL
+        return NULL;
     }
     root ->fd->fg = alloue_noeud("Dahlia");
     if(!root->fd->fg){
         fprintf(stderr, "pb avec malloc in cree_A_2");
         free(root);
-        return NULL
+        return NULL;
     }
     root->fd->fg->fd  = alloue_noeud("Camomille");
     if(!root->fd->fg->fd){
         fprintf(stderr, "pb avec malloc in cree_A_2");
         free(root);
-        return NULL
+        return NULL;
     }
     root->fd->fg->fd->fg = alloue_noeud("Iris");
     if(!root->fd->fg->fd->fg){
         fprintf(stderr, "pb avec malloc in cree_A_2");
         free(root);
-        return NULL
+        return NULL;
     }
     root->fd->fg->fd->fd = alloue_noeud("Jasmin");
     if(!root->fd->fg->fd->fd){
         fprintf(stderr, "pb avec malloc in cree_A_2");
         free(root);
-        return NULL
+        return NULL;
     }
 }
 
 
+Arbre cree_A_3(void){
+    Arbre a = alloue_Noeud("Intel Core i9");
+    if(!a){
+        liberer_arbre(&a);
+        return NULL;
+   }
+    a->fg = alloue_Noeud("Apple M3 Max");
+    if(!a->fg){
+        liberer_arbre(&a);
+        return NULL;
+   }
+    a->fg->fd = alloue_Noeud("AMD Ryzen 9");
+    if(!a->fg->fd){
+        liberer_arbre(&a);
+        return NULL;
+   }
+    a->fg->fd->fg = alloue_Noeud("Intel Core i9");
+    if(!a->fg->fd->fg){
+        liberer_arbre(&a);
+        return NULL;
+   }
+    a->fd = alloue_Noeud("Intel Core i9");
+    if(!a->fd){
+        liberer_arbre(&a);
+        return NULL;
+   }
+    a->fd->fg = alloue_Noeud("Intel Core i9");
+    if(!a->fd->fg){
+        liberer_arbre(&a);
+        return NULL;
+   }
+    return a;
+
+
+
+
+}
