@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS= -std=c17 -pedantic -Wall
 
-
+OBJ = arbres_binaires.o greffe.o saage.o main.o
 
 main : $(OBJ)
 	$(CC) -o $@ $^
