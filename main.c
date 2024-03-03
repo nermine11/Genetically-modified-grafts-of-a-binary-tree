@@ -1,4 +1,4 @@
-#include "arbres_binaire.h"
+#include "saage.h"
 
 void ecrireDebut(FILE *f){
     fprintf(f, "digraph arbre {\n");
