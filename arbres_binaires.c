@@ -32,17 +32,17 @@ void liberer(Arbre * a){
 }
 
 Arbre cree_A_1(void){
-   Arbre a = alloue_Noeud("arbre");
+   Arbre a = alloue_noeud("arbre");
    if(!a)
     return NULL;
-   a->fg = alloue_Noeud("binaire");
+   a->fg = alloue_noeud("binaire");
    if(!a->fg){
-        liberer_arbre(&a);
+        liberer(&a);
         return NULL;
    }
-   a->fd = alloue_Noeud("ternaire");
+   a->fd = alloue_noeud("ternaire");
    if(!a->fd){
-        liberer_arbre(&a);
+        liberer(&a);
         return NULL;
    }
    return a;
@@ -95,34 +95,34 @@ Arbre cree_A_2(void){
 
 
 Arbre cree_A_3(void){
-    Arbre a = alloue_Noeud("Intel Core i9");
+    Arbre a = alloue_noeud("Intel Core i9");
     if(!a){
-        liberer_arbre(&a);
+        liberer(&a);
         return NULL;
    }
-    a->fg = alloue_Noeud("Apple M3 Max");
+    a->fg = alloue_noeud("Apple M3 Max");
     if(!a->fg){
-        liberer_arbre(&a);
+        liberer(&a);
         return NULL;
    }
-    a->fg->fd = alloue_Noeud("AMD Ryzen 9");
+    a->fg->fd = alloue_noeud("AMD Ryzen 9");
     if(!a->fg->fd){
-        liberer_arbre(&a);
+        liberer(&a);
         return NULL;
    }
-    a->fg->fd->fg = alloue_Noeud("Intel Core i9");
+    a->fg->fd->fg = alloue_noeud("Intel Core i9");
     if(!a->fg->fd->fg){
-        liberer_arbre(&a);
+        liberer(&a);
         return NULL;
    }
-    a->fd = alloue_Noeud("Intel Core i9");
+    a->fd = alloue_noeud("Intel Core i9");
     if(!a->fd){
-        liberer_arbre(&a);
+        liberer(&a);
         return NULL;
    }
-    a->fd->fg = alloue_Noeud("Intel Core i9");
+    a->fd->fg = alloue_noeud("Intel Core i9");
     if(!a->fd->fg){
-        liberer_arbre(&a);
+        liberer(&a);
         return NULL;
    }
     return a;
