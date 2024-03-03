@@ -1,5 +1,20 @@
 #include "saage.h"
 
+
+int creation_Memo(Memo *p){
+    p->code = (char *)calloc( MAX_MOT, sizeof(char));
+    if(p->code){
+        p->taille_max = MAX_MOT;
+        return 1;
+
+    }
+    fprintf(stderr ,"il s'est produit une erreur\n");
+
+    free(p->code);
+    return 0;
+}
+
+
 int  Copier_Chiffre(char *mot , Memo * p , int i){
     int copier = 0 , val = 0;
 
