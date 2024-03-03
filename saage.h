@@ -9,18 +9,14 @@
 #define FORMAT(code , format) ((strstr(code , format ) )? 1 : 0)
 #define MOT_IDENTIQUE(mot , tokens)((strcmp(tokens , mot) == 0)? 1: 0 )
 
-typedef struct{
-    char *code;
-    int taille_max;
-}Memo;
 
 
-int  Copier_Chiffre(char *mot , Memo * p);
-int creation_Memo(Memo *p);
+
+int  Copier_Chiffre(char *mot , Memo * p , int i);
 int verification_mot(char * mot);
+int creation_Memo(Memo *p);
 int creation_code_adapter_arbre(Memo * p);
 Arbre construire_arbre_binaire(char * mot);
-Arbre saisir_arbre_binaire();
 void affiche(Arbre A , FILE * out, int nombre_espace );
 int test_format(char * nom_de_fichier );
 int serialise(char * nom_de_fichier, Arbre A);
