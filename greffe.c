@@ -1,5 +1,5 @@
-
 #include "greffe.h"
+
 
 
 //O(n * len), n : nombre de noeuds dans source, len : longeur de s
@@ -44,72 +44,56 @@ int copie(Arbre * dest, Arbre source){
 }
 
 
-
-
-
-int ajout_fg(Arbre *g, Arbre a){
-
+// ajoute sous arbre gauche de a à tous les noeuds de *g sans fg
+static void ajout_fg(Arbre *g, Arbre a){
     if(!a || !(*g))
-        return 0 ;
+        return  ;
     if(!((*g)->fg) && a->fg){
-        if(copie(&((*g)->fg), a->fg ));
-            return 1;
-        return 0;
+        copie(&((*g)->fg), a->fg);
+        return;
     }
 
     ajout_fg(&((*g)->fg),a);
     ajout_fg(&((*g)->fd),a);
-    return 1;
+
 }
 
 
+// ajoute sous arbre droit de a à tous les noeuds de *g sans fd
+static void ajout_fd(Arbre *g, Arbre a){
 
-int ajout_fd(Arbre *g, Arbre a){
-
-     if(!a || !(*g))
-        return 0 ;
+    if(!a || !(*g))
+        return;
     if(!((*g)->fd) && a->fd){
-        if(copie(&((*g)->fd), a->fd ))
-            return 1;
-        return 0;
+        copie(&((*g)->fd), a->fd );
+        printf( "copie in fd\n");
+
+        return;
     }
 
-    ajout_fd(&((*g)->fd), a);
-    ajout_fd(&((*g)->fg), a);
-    return 1;
+    ajout_fd(&((*g)->fd),a);
+    ajout_fd(&((*g)->fg),a);
 
 }
 
-
-
-int greffe(Arbre * a, Arbre b){
-
-    if(!(ajout_fg(&b, *a)))
-        return 0;
-    if(!(ajout_fd(&b, *a)))
-        return 0;
-    if(!(copie(a,b)))
-        return 0;
-    return 1;
-}
-
-
-int expansion(Arbre* a, Arbre b){
+static void expansion(Arbre * a, Arbre b){
 
     if(!(*a))
-        return 0;
+        return;
     expansion(&((*a)->fg), b);
     expansion(&((*a)->fd), b);
     if(!(strcmp((*a)->val, b->val))){
         Arbre g = NULL;
-        if (!(copie(&g, b)))
-            return 0;  
-        if(!(greffe(a,g)))
-            return 0;
-        return 1;
-    }
-    return 1;
+        copie(&g, b);
+        if((*a)->fg)
+            ajout_fg(&g, *a);
+        if((*a)->fd)
+            ajout_fd(&g, *a);
 
+        *a = g;
+        return;
+    }
 }
+
 
 

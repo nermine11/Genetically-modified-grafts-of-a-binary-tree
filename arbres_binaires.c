@@ -64,31 +64,31 @@ Arbre cree_A_2(void){
     root->fd = alloue_noeud("Camomille");
     if(!root->fd){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        free(root);
+        liberer(&root);
         return NULL;
     }
     root ->fd->fg = alloue_noeud("Dahlia");
     if(!root->fd->fg){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        free(root);
+        liberer(&root);
         return NULL;
     }
     root->fd->fg->fd  = alloue_noeud("Camomille");
     if(!root->fd->fg->fd){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        free(root);
+        liberer(&root);
         return NULL;
     }
     root->fd->fg->fd->fg = alloue_noeud("Iris");
     if(!root->fd->fg->fd->fg){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        free(root);
+        liberer(&root);
         return NULL;
     }
     root->fd->fg->fd->fd = alloue_noeud("Jasmin");
     if(!root->fd->fg->fd->fd){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        free(root);
+        liberer(&root);
         return NULL;
     }
 }
