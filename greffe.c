@@ -45,53 +45,61 @@ int copie(Arbre * dest, Arbre source){
 
 
 // ajoute sous arbre gauche de a à tous les noeuds de *g sans fg
-static void ajout_fg(Arbre *g, Arbre a){
+static int ajout_fg(Arbre *g, Arbre a){
     if(!a || !(*g))
-        return  ;
+        return 1 ;
     if(!((*g)->fg) && a->fg){
-        copie(&((*g)->fg), a->fg);
-        return;
+        if(!(copie(&((*g)->fg), a->fg)))
+            return 0;
+        return 1;
     }
-
-    ajout_fg(&((*g)->fg),a);
-    ajout_fg(&((*g)->fd),a);
+    int fg, fd;
+    fg= ajout_fg(&((*g)->fg),a);
+    fd = ajout_fg(&((*g)->fd),a);
+    return fg && fd;
 
 }
 
 
 // ajoute sous arbre droit de a à tous les noeuds de *g sans fd
-static void ajout_fd(Arbre *g, Arbre a){
+static int ajout_fd(Arbre *g, Arbre a){
 
     if(!a || !(*g))
-        return;
+        return 1;
     if(!((*g)->fd) && a->fd){
-        copie(&((*g)->fd), a->fd );
-        printf( "copie in fd\n");
-
-        return;
+        if(!(copie(&((*g)->fd), a->fd )))
+            return 0;
+        return 1;
     }
-
-    ajout_fd(&((*g)->fd),a);
-    ajout_fd(&((*g)->fg),a);
+    int fg,fd;
+    fd = ajout_fd(&((*g)->fd),a);
+    fg = ajout_fd(&((*g)->fg),a);
+    return fg && fd;
 
 }
 
-static void expansion(Arbre * a, Arbre b){
+static int expansion(Arbre * a, Arbre b){
 
     if(!(*a))
-        return;
-    expansion(&((*a)->fg), b);
-    expansion(&((*a)->fd), b);
+        return 1;
+    int fg, fd;
+    fg = expansion(&((*a)->fg), b);
+    fd = expansion(&((*a)->fd), b);
+    if( !fg || !fd)
+        return 0;
     if(!(strcmp((*a)->val, b->val))){
         Arbre g = NULL;
-        copie(&g, b);
+        if(!(copie(&g, b)))
+            return 0;
         if((*a)->fg)
-            ajout_fg(&g, *a);
+            if(!(ajout_fg(&g, *a)))
+                return 0;
         if((*a)->fd)
-            ajout_fd(&g, *a);
+            if(!(ajout_fd(&g, *a)))
+                return 0;
 
         *a = g;
-        return;
+        return 1;
     }
 }
 

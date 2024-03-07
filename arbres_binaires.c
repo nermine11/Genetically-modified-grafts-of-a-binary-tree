@@ -91,6 +91,7 @@ Arbre cree_A_2(void){
         liberer(&root);
         return NULL;
     }
+    return a;
 }
 
 
