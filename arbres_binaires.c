@@ -20,13 +20,13 @@ Noeud * alloue_noeud(char * s){
     return new_node;
 }
 
-void liberer(Arbre * a){
-    if(*a){
-        liberer(&((*a)->fg));
-        liberer(&((*a)->fd));
-        free((*a)->val);
-        free(*a);
-        (*a) = NULL;
+void liberer(Arbre * A){
+    if(*A){
+        liberer(&((*A)->fg));
+        liberer(&((*A)->fd));
+        free((*A)->val);
+        free(*A);
+        (*A) = NULL;
     }
 }
 
