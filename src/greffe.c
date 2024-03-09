@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "greffe.h"
 
 
@@ -78,7 +82,7 @@ static int ajout_fd(Arbre *g, Arbre a){
 
 }
 
-static int expansion(Arbre * a, Arbre b){
+int expansion(Arbre * a, Arbre b){
 
     if(!(*a))
         return 1;

@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "arbres_binaires.h"
 
 
@@ -49,45 +53,45 @@ Arbre cree_A_1(void){
 
 
 Arbre cree_A_2(void){
-    Arbre root = alloue_noeud("Anémone");
-    if(!root){
+    Arbre a = alloue_noeud("Anémone");
+    if(!a){
         fprintf(stderr, "pb avec malloc in cree_A_2");
         return NULL;
     }
-    root->fg = alloue_noeud("Camomille");
-    if(!root->fg){
+    a->fg = alloue_noeud("Camomille");
+    if(!(a->fg)){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        free(root);
+        liberer(&a);
         return NULL;
     }
-    root->fd = alloue_noeud("Camomille");
-    if(!root->fd){
+    a->fd = alloue_noeud("Camomille");
+    if(!(a->fd)){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        liberer(&root);
+        liberer(&a);
         return NULL;
     }
-    root ->fd->fg = alloue_noeud("Dahlia");
-    if(!root->fd->fg){
+    a ->fd->fg = alloue_noeud("Dahlia");
+    if(!a->fd->fg){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        liberer(&root);
+        liberer(&a);
         return NULL;
     }
-    root->fd->fg->fd  = alloue_noeud("Camomille");
-    if(!root->fd->fg->fd){
+    a->fd->fg->fd  = alloue_noeud("Camomille");
+    if(!a->fd->fg->fd){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        liberer(&root);
+        liberer(&a);
         return NULL;
     }
-    root->fd->fg->fd->fg = alloue_noeud("Iris");
-    if(!root->fd->fg->fd->fg){
+    a->fd->fg->fd->fg = alloue_noeud("Iris");
+    if(!a->fd->fg->fd->fg){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        liberer(&root);
+        liberer(&a);
         return NULL;
     }
-    root->fd->fg->fd->fd = alloue_noeud("Jasmin");
-    if(!root->fd->fg->fd->fd){
+    a->fd->fg->fd->fd = alloue_noeud("Jasmin");
+    if(!a->fd->fg->fd->fd){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        liberer(&root);
+        liberer(&a);
         return NULL;
     }
     return a;

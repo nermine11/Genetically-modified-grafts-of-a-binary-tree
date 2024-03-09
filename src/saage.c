@@ -1,4 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "saage.h"
+
+
+
 
 int  Copier_Chiffre(char *mot , Memo * p , int i){
     int copier = 0 , val = 0;

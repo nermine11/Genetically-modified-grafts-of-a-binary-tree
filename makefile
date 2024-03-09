@@ -1,23 +1,28 @@
-CC = gcc
+CC = clang
 CFLAGS= -std=c17 -pedantic -Wall
 
-OBJ = arbres_binaires.o greffe.o saage.o main.o
-
-main : $(OBJ)
+saage : src/arbres_binaires.o src/greffe.o src/saage.o src/main.o
 	$(CC) -o $@ $^
 
 
-
-arbres_binaires.o: arbres_binaires.c arbres_binaires.h
-greffe.o : greffe.c greffe.h arbres_binaires.h
-saage.o : saage.c saage.h arbres_binaires.h
-main.o : main.c arbres_binaires.h greffe.h saage.h
+src/arbres_binaires.o: src/arbres_binaires.c include/arbres_binaires.h
+src/greffe.o : src/greffe.c include/greffe.h include/arbres_binaires.h
+src/saage.o : src/saage.c include/saage.h include/arbres_binaires.h
+src/main.o : src/main.c include/arbres_binaires.h include/greffe.h include/saage.h
 
 
 
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -I include -c -o $@ $<
 
 clean:
-	rm -f *.o
+	rm -f src/*.o
+
+
+ARCHIVE = Elkilani_Desravines_v20240309
+dist: clean
+	mkdir -p $(ARCHIVE)
+	cp -Rt $(ARCHIVE) src include docs makefile
+	zip -r $(ARCHIVE).zip $(ARCHIVE)
+	rm -fr $(ARCHIVE)
