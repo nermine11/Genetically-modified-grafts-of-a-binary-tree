@@ -1,5 +1,5 @@
 #ifndef GREFFE_H
-#define GREFFE_H_H
+#define GREFFE_H_
 
 #include "arbres_binaires.h"
 

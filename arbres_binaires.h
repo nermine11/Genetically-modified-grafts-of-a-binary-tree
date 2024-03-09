@@ -1,8 +1,6 @@
 #ifndef ARBRES_BINAIRES_H
 #define ARBRES_BINAIRES_H
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 
 typedef struct _noeud {
     char *val ;

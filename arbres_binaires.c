@@ -1,4 +1,3 @@
-
 #include "arbres_binaires.h"
 
 
