@@ -4,7 +4,6 @@
 #include "arbres_binaires.h"
 
 
-
 int copie(Arbre * dest, Arbre source);
 int expansion(Arbre * a, Arbre b);
 

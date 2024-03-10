@@ -6,9 +6,10 @@
 
 
 
-//O(n * len), n : nombre de noeuds dans source, len : longeur de s
-// we traverse each node exactly once so it is proportional to n
-// for each node we may need to allocate memory
+/*O(n * len), n : nombre de nœuds dans source, len : longueur de s
+ Nous traversons chaque nœud exactement une fois, donc c'est proportionnel à n
+ Pour chaque nœud, nous pourrions avoir besoin d'allouer de la mémoire 
+ On retourne 0 si l’allocation échoue, sinon on retourne 1*/
 int copie(Arbre * dest, Arbre source){
     if (!source){   
         *dest = NULL;
@@ -40,7 +41,7 @@ int copie(Arbre * dest, Arbre source){
     }
     if (source->fd){
         if(!copie(&((*dest)->fd), source->fd)){
-            fprintf(stderr, "erruer dans copie()");
+            fprintf(stderr, "erreur dans copie()");
             return 0;
         }
     }
@@ -48,7 +49,9 @@ int copie(Arbre * dest, Arbre source){
 }
 
 
-// ajoute sous arbre gauche de a à tous les noeuds de *g sans fg
+/* ajoute sous arbre gauche de a à tous les noeuds de *g sans fg
+on retourne 0 si copie échoue sinon on retourne 1
+*/
 static int ajout_fg(Arbre *g, Arbre a){
     if(!a || !(*g))
         return 1 ;
@@ -58,14 +61,16 @@ static int ajout_fg(Arbre *g, Arbre a){
         return 1;
     }
     int fg, fd;
-    fg= ajout_fg(&((*g)->fg),a);
+    fg = ajout_fg(&((*g)->fg),a);
     fd = ajout_fg(&((*g)->fd),a);
     return fg && fd;
 
 }
 
 
-// ajoute sous arbre droit de a à tous les noeuds de *g sans fd
+/* ajoute sous arbre droit de a à tous les noeuds de *g sans fd
+on retourne 0 si copie échoue sinon on retourne 1*/
+
 static int ajout_fd(Arbre *g, Arbre a){
 
     if(!a || !(*g))
