@@ -1,169 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "saage.h"
 
 
+int reallouer(Memo * p){
 
-
-int  Copier_Chiffre(char *mot , Memo * p , int i){
-    int copier = 0 , val = 0;
-
-    if(!strstr(mot, "\\n")){
-
-
-        for(;*mot != '\0';mot++)
-        {
-            
-            copier = (NOEUD_VIDE(*mot))? 1 : (NOEUD_EXIST(*mot))? 2 : (*mot == ' ')? 3 : (*mot == '\n')? 3 : -1;
-            
-
-            switch (copier)
-            {
-                case 1:
-                  
-                    strcat(p->code , "0");
-                    strcat(p->code , "*");
-                    val = 1;
-                    break;
-
-                case 2:
-        
-                    strcat(p->code , "1");
-                    strcat(p->code , "*");
-                    val = 1;
-                break;
-
-                case 3:
-                break;
-
-                default:
-                    return -1;
-            }
- 
-        }
-
-        if(!val)
-            return -1;
-
-        return val;
-    }
-    
-    return copier;
-      
-
-}
-
-int verification_mot(char * mot){
-    if( mot[strlen(mot) - 2] != '\\' && mot[strlen(mot) - 1] != 'n')
+    char *t = (char *) malloc(p->taille_max *2 * sizeof(char) );
+    if(!p->code){
+        free(p->code);
+        fprintf(stderr , "problème d'allocation\n");
         return 0;
+    } 
+    strcpy(t , p->code);
+    p->code = t;
+    t = NULL;
+    p->taille_max *= 2;
     return 1;
-}
-
-int creation_code_adapter_arbre(Memo * p){
-    char ligne[MAX_MOT] ;
-    int i = 0 , value_copie;
-    if(!fgets(ligne , MAX_MOT , stdin)){
-        fprintf(stderr , "il y a eu un problème\n");
-        return 0;
-    }
-        
-    if(!strstr(ligne , "\"") && !strstr(ligne , "\\n")){
-        fprintf(stderr , "le code de cette arbre est incorrecte1\n");
-        return 0;
-    }
-
-  
-    char * mot = strtok(ligne , "\"");
-    while (mot)
-    {   
-
-        value_copie = Copier_Chiffre(mot , p , i);
-        if(value_copie == -1){
-            fprintf(stderr , "le code de cette arbre est incorrecte, je pense que vous avez saisi un mauvais chiffre\n");
-            return 0;
-        }
-
-        if(!value_copie && !NOEUD_EXIST(p->code[strlen(p->code) - 2]) && !verification_mot(mot)){
-            fprintf(stderr , "le code de cette arbre est incorrecte, je pense que vous avez saisi un mauvais chiffre\n");
-            return 0;
-        }
-
-        if(!value_copie){
-            mot[strlen(mot) - 1] = '\0';
-            mot[strlen(mot) - 1] = '\0';
-            strcat(p->code , mot);
-            strcat(p->code , "*");
-        }
-        
-
-       
-        i++;
-       mot = strtok(NULL , "\"");
-    }
     
-   
-    return 1;
 }
-
-int creation_Memo(Memo *p){
-    p->code = (char *)calloc( MAX_MOT, sizeof(char));
-    if(p->code){
-        p->taille_max = MAX_MOT;
-        return 1;
-
-    }
-    fprintf(stderr ,"il s'est produit une erreur\n");
-
-    free(p->code);
-    return 0;
-}
-
-
-Arbre saisir_arbre_binaire(){
-    Memo p;
-    Arbre A;
-    creation_Memo(&p);
-    creation_code_adapter_arbre(&p);
-    char * mot = strtok(p.code , "*");
-    A = construire_arbre_binaire(mot);
-    free(p.code);
-    return A;
-}
-
-
-
-
-Arbre construire_arbre_binaire(char * mot){
-    mot = strtok(NULL , "*");
-    if(mot){
-       
-        if(NOEUD_VIDE(*mot))
-            return NULL;
-        
-        if(NOEUD_EXIST(*mot))
-            mot = strtok(NULL , "*");
-    
-        
-
-        if(!mot)
-            return NULL;
-        Arbre a = alloue_noeud(mot);
-    
-        if(!a){
-            liberer(&a);
-            exit(EXIT_FAILURE);
-
-        }
-        a->fg = construire_arbre_binaire(mot);
-        a->fd = construire_arbre_binaire(mot);
-        
-       return a;
-   }
-
-    return NULL;
-}
-
 
 void affiche(Arbre A , FILE * out, int nombre_espace ){
     int i ;
@@ -197,35 +49,35 @@ void affiche(Arbre A , FILE * out, int nombre_espace ){
     
 }
 
-int test_format(char * nom_de_fichier ){
-    if(!FORMAT(nom_de_fichier , ".saage")){
-        fprintf(stderr , "le format du fichier est incorrecte\n");
-        return 0;
+char * test_format(char * nom_de_fichier , int modifier , Memo *p){
+    int test = strlen(nom_de_fichier) < 6 && !FORMAT(nom_de_fichier , ".")? 1 : (!MOT_IDENTIQUE( nom_de_fichier + strlen(nom_de_fichier) - 6 , ".saage") && !FORMAT(nom_de_fichier , "."))? 1 :0;
+    creation_Memo(p);
+    strcpy(p->code , "doc/");
+    if(test){
+        if(modifier){
+            strcat(p->code , nom_de_fichier);
+            fprintf(stderr, "Attention vous avez oublier de mettre le format .saage\n");
+            strcat(p->code , ".saage");
+        }
+        return (!modifier) ? NULL : p->code;
     }
-    char format[7] = "egaas.";
-    
-    for (int i = 0; i < 6; i++)
-    {
-
-        if (format[i] != nom_de_fichier[strlen(nom_de_fichier) - i - 1])
-            return 0;
-        
-        
-    }
-    
-    return 1;
+    free(p->code);
+    p->code = NULL;
+    return (strlen(nom_de_fichier) >= 6 && MOT_IDENTIQUE( nom_de_fichier + strlen(nom_de_fichier) - 6 , ".saage"))? nom_de_fichier : NULL ;
 }
 
-int serialise(char * nom_de_fichier, Arbre A){
-    FILE * out = fopen ( nom_de_fichier , "w") ;
 
-    if (!test_format(nom_de_fichier )){
+
+int serialise(char * nom_de_fichier, Arbre A){
+    Memo p;
+    nom_de_fichier = test_format(nom_de_fichier , 1 , &p);
+    if (!nom_de_fichier){
         fprintf(stderr , "le format du fichier est incorrecte\n");
         return 0;
     }
 
-   
-
+    FILE * out = fopen ( nom_de_fichier , "w");
+    if(p.code) free(p.code);
     if(!out){
         fprintf(stderr , "le fichier ne s'est pas ouvert\n");
         return 0;
@@ -247,43 +99,93 @@ int serialise(char * nom_de_fichier, Arbre A){
 
 }
 
-
-
 int deserialise(char * nom_de_fichier, Arbre * A){// choisir la séparation en fonction du texte la B.saage ne marche pas 
+    Memo tmp , p;
+    char ligne[MAX_MOT] , *direction , *mot ;
+   
+    int taille_chaine = 0; 
 
-    char ligne[MAX_MOT] ,  *mot;
     FILE * out = fopen ( nom_de_fichier , "r") ;
-
     if(!out){
         printf("le fichier out ne s'est pas ouvert \n");
         return 0;
     }
-    Memo p;
+    if(!test_format(nom_de_fichier , 0 , &tmp)){
+        printf("le format n'est pas le bon\n");
+        return 0;
+    }
+    if(tmp.code)
+        free(tmp.code);
+
+
     creation_Memo(&p);
 
     for( ; fgets(ligne , MAX_MOT , out) ; ){
-        strtok(ligne , ":\n");
+        
+        direction = strtok(ligne , ":\n");
         mot = strtok(NULL , ":\n");
+
+        if(p.taille_max <= strlen(p.code) + 1){ 
+            if(!reallouer(&p)){
+                free(p.code);
+                return 0;
+            }
+        }
+
+        if(!strstr(direction , "Gauche") && !strstr(direction , "Droite") && !strstr(direction , "Valeur") ){
+            fprintf(stderr , "le fichier est incorrect\n");
+            free(p.code);
+            return 0;
+        }
+        if((strstr(direction , "Gauche") || strstr(direction , "Droite")) && !((MOT_IDENTIQUE(mot , " ")  || MOT_IDENTIQUE(mot , " NULL")))){
+
+            fprintf(stderr , "le fichier est incorrect2 %d\n" , MOT_IDENTIQUE(mot , " "));
+            free(p.code);
+            return 0;
+
+        }
+        taille_chaine = 1;
+        
         if(NOEUD_STRING_VIDE(mot)){
             strcat(p.code , "*0");
-            strcat(p.code , "*");
+            if(MOT_IDENTIQUE(p.code + strlen(p.code) - 1, " "))strcat(p.code , "*");
         }
         else if (!MOT_VIDE(mot)){
             strcat(p.code , "*1");
             strcat(p.code , "*");
-            strcat(p.code , mot);
+            if(!strncmp(mot , " ", strlen(" "))){
+                strcat(p.code , mot + 1);
+            }
+            else
+                strcat(p.code , mot);
            
         }
         
         
-        
 
     }
+  
 
-    char * mot2 = strtok(p.code , "*");
+    if(taille_chaine){
+        char * mot = strtok(p.code , "*");
+        *A = construire_arbre_binaire(mot);
+        free(p.code);
     
-    *A = construire_arbre_binaire(mot2);
-    free(p.code);
-    return 1;
+    }
+    return taille_chaine;
+}
+
+
+
+void nom(char * fichier , char mot[MAX_MOT]){
+    
+    int i;
+    for(i = 0 ; i < MAX_MOT ; i++ ){
+        if(*fichier == '.')
+            break;
+       
+        mot[i] = *fichier;
+        fichier++;
+    }
 
 }
