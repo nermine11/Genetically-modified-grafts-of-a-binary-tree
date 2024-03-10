@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "arbres_binaires.h"
 
@@ -24,13 +21,13 @@ Noeud * alloue_noeud(char * s){
     return new_node;
 }
 
-void liberer(Arbre * A){
-    if(*A){
-        liberer(&((*A)->fg));
-        liberer(&((*A)->fd));
-        free((*A)->val);
-        free(*A);
-        (*A) = NULL;
+void liberer(Arbre * a){
+    if(*a){
+        liberer(&((*a)->fg));
+        liberer(&((*a)->fd));
+        free((*a)->val);
+        free(*a);
+        (*a) = NULL;
     }
 }
 
@@ -53,48 +50,47 @@ Arbre cree_A_1(void){
 
 
 Arbre cree_A_2(void){
-    Arbre a = alloue_noeud("Anémone");
-    if(!a){
+    Arbre root = alloue_noeud("Anémone");
+    if(!root){
         fprintf(stderr, "pb avec malloc in cree_A_2");
         return NULL;
     }
-    a->fg = alloue_noeud("Camomille");
-    if(!(a->fg)){
+    root->fg = alloue_noeud("Camomille");
+    if(!root->fg){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        liberer(&a);
+        free(root);
         return NULL;
     }
-    a->fd = alloue_noeud("Camomille");
-    if(!(a->fd)){
+    root->fd = alloue_noeud("Camomille");
+    if(!root->fd){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        liberer(&a);
+        free(root);
         return NULL;
     }
-    a ->fd->fg = alloue_noeud("Dahlia");
-    if(!a->fd->fg){
+    root ->fd->fg = alloue_noeud("Dahlia");
+    if(!root->fd->fg){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        liberer(&a);
+        free(root);
         return NULL;
     }
-    a->fd->fg->fd  = alloue_noeud("Camomille");
-    if(!a->fd->fg->fd){
+    root->fd->fg->fd  = alloue_noeud("Camomille");
+    if(!root->fd->fg->fd){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        liberer(&a);
+        free(root);
         return NULL;
     }
-    a->fd->fg->fd->fg = alloue_noeud("Iris");
-    if(!a->fd->fg->fd->fg){
+    root->fd->fg->fd->fg = alloue_noeud("Iris");
+    if(!root->fd->fg->fd->fg){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        liberer(&a);
+        free(root);
         return NULL;
     }
-    a->fd->fg->fd->fd = alloue_noeud("Jasmin");
-    if(!a->fd->fg->fd->fd){
+    root->fd->fg->fd->fd = alloue_noeud("Jasmin");
+    if(!root->fd->fg->fd->fd){
         fprintf(stderr, "pb avec malloc in cree_A_2");
-        liberer(&a);
+        free(root);
         return NULL;
     }
-    return a;
 }
 
 
@@ -133,5 +129,213 @@ Arbre cree_A_3(void){
 
 
 
+
+}
+
+int  Copier_Chiffre(char *mot , Memo * p){
+    int copier = 0 , val = 0;
+
+    if(!strstr(mot, "\\n")){
+
+        for(;*mot != '\0';mot++)
+        {
+            copier = (NOEUD_VIDE(*mot))? 1 : (NOEUD_EXIST(*mot))? 2 : (*mot == ' ')? 3 : (*mot == '\n')? 3 : -1;
+            
+
+            switch (copier)
+            {
+                case 1:
+                  
+                    strcat(p->code , "0");
+                    strcat(p->code , "*");
+                    val = 1;
+                    break;
+
+                case 2:
+        
+                    strcat(p->code , "1");
+                    strcat(p->code , "*");
+                    val = 1;
+                break;
+
+                case 3:
+                break;
+
+                default:
+                    return -1;
+            }
+ 
+        }
+
+        if(!val)
+            return -1;
+
+        return val;
+    }
+    
+    return copier;
+      
+
+}
+
+
+int lire(char * chaine , int longeur  , Memo * p){
+    char *test;
+    
+    if(!fgets(chaine , longeur, stdin)){
+        fprintf(stderr , "il y a eu un problème\n");
+        fflush(stdin);
+        return 0;
+    }
+    if(!(test = strchr(chaine , '\n'))){
+        fprintf(stderr , "la ligne que vous avez saisi est trop longue (max caractères : 200)\n");
+        fflush(stdin);
+        return 0;
+    }
+    if(!strstr(chaine , "\"") && !strstr(chaine , "\\n")){
+        fprintf(stderr , "le code n'est pas dans le bon format \n");
+        return 0;
+    }
+
+
+
+    return 1;
+
+    
+}
+
+int verification_mot(char * mot){
+    if( mot[strlen(mot) - 2] != '\\' && mot[strlen(mot) - 1] != 'n')
+        return 0;
+    return 1;
+}
+void vider_memo(char * code , int taille){
+    char * fin = code + taille;
+    for(; code < fin ; code++){
+        *code ='\0';
+    }
+}
+
+int creation_code_adapter_arbre(Memo * p){
+    char ligne[MAX_MOT] ;
+    int i = 0 , value_copie;
+    if(!lire(ligne , MAX_MOT  ,p)){
+        fprintf(stderr , "il y a eu un problème\n");
+        return 0;
+
+    }
+    char * mot = strtok(ligne , "\"");
+    while (mot)
+    {   
+        if(p->taille_max <= strlen(p->code) + 1){ 
+            if(!reallouer(p)){
+                free(p->code);
+                return 0;
+            }
+        }
+
+        value_copie = Copier_Chiffre(mot , p);
+        if(value_copie == -1){
+            fprintf(stderr , "le code de cette arbre est incorrecte, je pense que vous avez saisi un mauvais chiffre\n");
+            vider_memo(p->code , strlen(p->code));
+            return 0;
+        }
+
+        if(!value_copie && !NOEUD_EXIST(p->code[strlen(p->code) - 2]) && !verification_mot(mot)){
+            fprintf(stderr , "le code de cette arbre est incorrecte, je pense que vous avez saisi un mauvais chiffre\n");
+            vider_memo(p->code , strlen(p->code));
+            return 0;
+        }
+
+        if(!value_copie){
+            mot[strlen(mot) - 1] = '\0';
+            mot[strlen(mot) - 1] = '\0';
+            strcat(p->code , mot);
+            strcat(p->code , "*");
+        }
+        
+       mot = strtok(NULL , "\"");
+    }
+    
+   
+    return 1;
+}
+
+int creation_Memo(Memo *p){
+    p->code = (char *)calloc( MAX_MOT, sizeof(char));
+    if(p->code){
+        p->taille_max = MAX_MOT;
+        return 1;
+
+    }
+    fprintf(stderr ,"il s'est produit une erreur\n");
+
+    free(p->code);
+    return 0;
+}
+
+
+
+
+
+Arbre construire_arbre_binaire(char * mot){
+    mot = strtok(NULL , "*");
+    if(mot){
+       
+        if(NOEUD_VIDE(*mot))
+            return NULL;
+        
+        if(NOEUD_EXIST(*mot))
+            mot = strtok(NULL , "*");
+    
+        
+
+        if(!mot)
+            return NULL;
+        Arbre a = alloue_noeud(mot);
+    
+        if(!a){
+            liberer(&a);
+            exit(EXIT_FAILURE);
+
+        }
+        a->fg = construire_arbre_binaire(mot);
+        a->fd = construire_arbre_binaire(mot);
+        
+       return a;
+   }
+
+    return NULL;
+}
+int construit_arbre(Arbre *a){
+    Memo p;
+    
+    char ligne[MAX_MOT];
+   
+    creation_Memo(&p);
+    char arret = 'n';
+    int nb_echec = 0;
+    while (!creation_code_adapter_arbre(&p)){
+        if(nb_echec == 5)printf("voulez-vous arrêter ?[O/N]\n");
+
+        if(nb_echec == 5 && scanf("%c" , &arret) < 1)
+            fflush(stdin);
+            
+        if(nb_echec == 5 &&(arret == 'o' || arret == 'O')){
+            free(p.code);
+            return 0;
+        }
+        if(nb_echec == 5 && arret == 'n' || arret == 'N'){
+            nb_echec = 0;
+            fflush(stdin);
+        }
+        nb_echec++;
+    }
+
+    char * mot = strtok(p.code , "*");
+    *a = construire_arbre_binaire(mot);  
+    
+    free(p.code);
+    return (!(*a))? 0 : 1;
 
 }
