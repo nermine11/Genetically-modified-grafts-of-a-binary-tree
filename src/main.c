@@ -37,6 +37,7 @@ int main(int argc, char *argv[]){
         }
         if(!deserialise(argv[indice_fichier2], &B)){
             fprintf(stderr , "il y a eu un probleme pour la désérialisation du fichier %s\n", argv[indice_fichier2]);
+            liberer(&A);
             liberer(&B);
             return 0;
         
@@ -56,7 +57,8 @@ int main(int argc, char *argv[]){
         //-----------------------//
    
         serialise(nom_fichier , A);
-
+         liberer(&A);
+         liberer(&B);
 
     }
 }//main
