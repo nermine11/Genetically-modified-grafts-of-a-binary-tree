@@ -52,7 +52,7 @@ void affiche(Arbre A , FILE * out, int nombre_espace ){
 char * test_format(char * nom_de_fichier , int modifier , Memo *p){
     int test = strlen(nom_de_fichier) < 6 && !FORMAT(nom_de_fichier , ".")? 1 : (!MOT_IDENTIQUE( nom_de_fichier + strlen(nom_de_fichier) - 6 , ".saage") && !FORMAT(nom_de_fichier , "."))? 1 :0;
     creation_Memo(p);
-    strcpy(p->code , "doc/");
+    strcpy(p->code , "data/");
     if(test){
         if(modifier){
             strcat(p->code , nom_de_fichier);
