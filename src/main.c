@@ -1,4 +1,11 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "saage.h"
+#include "greffe.h"
+#include "arbres_binaires.h"
+
 
 
 

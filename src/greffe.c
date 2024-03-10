@@ -110,6 +110,7 @@ int expansion(Arbre * a, Arbre b){
         *a = g;
         return 1;
     }
+    return 1;
 }
 
 
