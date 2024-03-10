@@ -13,7 +13,6 @@ int main(int argc, char *argv[]){
    Arbre A = NULL , B = NULL;
     int indice_fichier = 2 , indice_fichier2 = 3;
     char nom_fichier[MAX_MOT] , fichier[MAX_MOT] ;
-    FILE * out = fopen("Arbre.dot" , "a");
     if (argc < 3){
 
         fprintf(stderr ,"il faut avoir au moins 3 arguments\n");
