@@ -48,10 +48,7 @@ int main(int argc, char *argv[]){
         strcat(nom_fichier , "_apres_greffe_de_");
         strcat(nom_fichier ,argv[indice_fichier2] );
         //-----------------------//
-        if(out){
-            creePDF ("Arbre.dot" , "Arbre.pdf" , A);
-            system ( " evince  Arbre.pdf   & " ) ;
-        }
+   
         serialise(nom_fichier , A);
 
 
