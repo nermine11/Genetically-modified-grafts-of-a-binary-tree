@@ -132,7 +132,7 @@ Arbre cree_A_3(void){
 
 }
 
-int  Copier_Chiffre(char *mot , Memo * p){
+static int  Copier_Chiffre(char *mot , Memo * p){
     int copier = 0 , val = 0;
 
     if(!strstr(mot, "\\n")){
@@ -179,7 +179,7 @@ int  Copier_Chiffre(char *mot , Memo * p){
 }
 
 
-int lire(char * chaine , int longeur  , Memo * p){
+static int lire(char * chaine , int longeur  , Memo * p){
     char *test;
     
     if(!fgets(chaine , longeur, stdin)){
@@ -204,19 +204,19 @@ int lire(char * chaine , int longeur  , Memo * p){
     
 }
 
-int verification_mot(char * mot){
+static int verification_mot(char * mot){
     if( mot[strlen(mot) - 2] != '\\' && mot[strlen(mot) - 1] != 'n')
         return 0;
     return 1;
 }
-void vider_memo(char * code , int taille){
+static void vider_memo(char * code , int taille){
     char * fin = code + taille;
     for(; code < fin ; code++){
         *code ='\0';
     }
 }
 
-int creation_code_adapter_arbre(Memo * p){
+static int creation_code_adapter_arbre(Memo * p){
     char ligne[MAX_MOT] ;
     int i = 0 , value_copie;
     if(!lire(ligne , MAX_MOT  ,p)){
@@ -261,7 +261,7 @@ int creation_code_adapter_arbre(Memo * p){
     return 1;
 }
 
-int creation_Memo(Memo *p){
+static int creation_Memo(Memo *p){
     p->code = (char *)calloc( MAX_MOT, sizeof(char));
     if(p->code){
         p->taille_max = MAX_MOT;
@@ -278,7 +278,7 @@ int creation_Memo(Memo *p){
 
 
 
-Arbre construire_arbre_binaire(char * mot){
+static Arbre construire_arbre_binaire(char * mot){
     mot = strtok(NULL , "*");
     if(mot){
        

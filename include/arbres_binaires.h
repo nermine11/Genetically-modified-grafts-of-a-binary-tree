@@ -28,12 +28,5 @@ void liberer(Arbre * A);
 Arbre cree_A_1(void);
 Arbre cree_A_2(void);
 Arbre cree_A_3(void);
-int  Copier_Chiffre(char *mot , Memo * p);
-int lire(char * chaine , int longeur  , Memo * p);
-int verification_mot(char * mot);
-void vider_memo(char * code , int taille);
-int creation_code_adapter_arbre(Memo * p);
-int creation_Memo(Memo *p);
-Arbre construire_arbre_binaire(char * mot);
 int construit_arbre(Arbre *a);
 #endif
