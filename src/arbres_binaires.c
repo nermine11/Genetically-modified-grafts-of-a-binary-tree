@@ -218,7 +218,7 @@ static void vider_memo(char * code , int taille){
 
 static int creation_code_adapter_arbre(Memo * p){
     char ligne[MAX_MOT] ;
-    int i = 0 , value_copie;
+    int value_copie;
     if(!lire(ligne , MAX_MOT  ,p)){
         fprintf(stderr , "il y a eu un problème\n");
         return 0;
@@ -227,7 +227,7 @@ static int creation_code_adapter_arbre(Memo * p){
     char * mot = strtok(ligne , "\"");
     while (mot)
     {   
-        if(p->taille_max <= strlen(p->code) + 1){ 
+        if(p->taille_max <= strlen(p->code) + strlen(mot)){ 
             if(!reallouer(p)){
                 free(p->code);
                 return 0;
@@ -325,7 +325,7 @@ int construit_arbre(Arbre *a){
             free(p.code);
             return 0;
         }
-        if(nb_echec == 5 && arret == 'n' || arret == 'N'){
+        if(nb_echec == 5 && (arret == 'n' || arret == 'N')){
             nb_echec = 0;
             fflush(stdin);
         }
@@ -339,3 +339,8 @@ int construit_arbre(Arbre *a){
     return (!(*a))? 0 : 1;
 
 }
+
+
+
+
+
