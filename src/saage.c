@@ -61,9 +61,11 @@ char * test_format(char * nom_de_fichier , int modifier , Memo *p){
         }
         return (!modifier) ? NULL : p->code;
     }
-    free(p->code);
-    p->code = NULL;
-    return (strlen(nom_de_fichier) >= 6 && MOT_IDENTIQUE( nom_de_fichier + strlen(nom_de_fichier) - 6 , ".saage"))? nom_de_fichier : NULL ;
+    if((strlen(nom_de_fichier) >= 6 && MOT_IDENTIQUE( nom_de_fichier + strlen(nom_de_fichier) - 6 , ".saage"))){
+        strcat(p->code , nom_de_fichier);
+        return p->code;
+    }
+    return  NULL ;
 }
 
 
@@ -100,7 +102,7 @@ int serialise(char * nom_de_fichier, Arbre A){
 }
 
 int deserialise(char * nom_de_fichier, Arbre * A){// choisir la séparation en fonction du texte la B.saage ne marche pas 
-    Memo tmp , p;
+   Memo tmp , p;
     char ligne[MAX_MOT] , *direction , *mot ;
    
     int taille_chaine = 0; 
@@ -125,19 +127,19 @@ int deserialise(char * nom_de_fichier, Arbre * A){// choisir la séparation en f
         direction = strtok(ligne , ":\n");
         mot = strtok(NULL , ":\n");
 
-        if(p.taille_max <= strlen(p.code) + 1){ 
+        if(p.taille_max <= strlen(p.code) + strlen(mot)){ 
             if(!reallouer(&p)){
                 free(p.code);
                 return 0;
             }
         }
 
-        if(!strstr(direction , "Gauche") && !strstr(direction , "Droite") && !strstr(direction , "Valeur") ){
+        if(direction && mot && !strstr(direction , "Gauche") && !strstr(direction , "Droite") && !strstr(direction , "Valeur") ){
             fprintf(stderr , "le fichier est incorrect\n");
             free(p.code);
             return 0;
         }
-        if((strstr(direction , "Gauche") || strstr(direction , "Droite")) && !((MOT_IDENTIQUE(mot , " ")  || MOT_IDENTIQUE(mot , " NULL")))){
+        if(direction && mot && (strstr(direction , "Gauche") || strstr(direction , "Droite")) && !((MOT_IDENTIQUE(mot , " ")  || MOT_IDENTIQUE(mot , " NULL")))){
 
             fprintf(stderr , "le fichier est incorrect2 %d\n" , MOT_IDENTIQUE(mot , " "));
             free(p.code);
@@ -146,11 +148,11 @@ int deserialise(char * nom_de_fichier, Arbre * A){// choisir la séparation en f
         }
         taille_chaine = 1;
         
-        if(NOEUD_STRING_VIDE(mot)){
+        if(mot && NOEUD_STRING_VIDE(mot)){
             strcat(p.code , "*0");
             if(MOT_IDENTIQUE(p.code + strlen(p.code) - 1, " "))strcat(p.code , "*");
         }
-        else if (!MOT_VIDE(mot)){
+        else if (mot && !MOT_VIDE(mot)){
             strcat(p.code , "*1");
             strcat(p.code , "*");
             if(!strncmp(mot , " ", strlen(" "))){
