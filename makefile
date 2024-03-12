@@ -23,6 +23,6 @@ clean:
 ARCHIVE = Elkilani_Desravines_v20240309
 dist: clean
 	mkdir -p $(ARCHIVE)
-	cp -Rt $(ARCHIVE) src include docs makefile
+	cp -Rt $(ARCHIVE) src include makefile rapport.pdf
 	zip -r $(ARCHIVE).zip $(ARCHIVE)
 	rm -fr $(ARCHIVE)
