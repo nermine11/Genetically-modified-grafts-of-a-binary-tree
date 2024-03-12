@@ -1,7 +1,7 @@
 #include "saage.h"
 
 
-int reallouer(Memo * p){
+static int reallouer(Memo * p){
 
     char *t = (char *) malloc(p->taille_max *2 * sizeof(char) );
     if(!p->code){
@@ -17,7 +17,9 @@ int reallouer(Memo * p){
     
 }
 
-void affiche(Arbre A , FILE * out, int nombre_espace ){
+
+/* écrit d’abord dans le fichier  le sous-arbre gauche ensuite le sous-arbre droit en respectant les conventions données*/
+static void affiche(Arbre A , FILE * out, int nombre_espace ){
     int i ;
     char espace[MAX_MOT] = "    ";
     if(!A){
@@ -49,7 +51,8 @@ void affiche(Arbre A , FILE * out, int nombre_espace ){
     
 }
 
-char * test_format(char * nom_de_fichier , int modifier , Memo *p){
+/*teste si le format (qu'il contient .saage) du fichier est correct il renvoie 1 sinon 0.*/
+static char * test_format(char * nom_de_fichier , int modifier , Memo *p){
     int test = strlen(nom_de_fichier) < 6 && !FORMAT(nom_de_fichier , ".")? 1 : (!MOT_IDENTIQUE( nom_de_fichier + strlen(nom_de_fichier) - 6 , ".saage") && !FORMAT(nom_de_fichier , "."))? 1 :0;
     creation_Memo(p);
     strcpy(p->code , "data/");
@@ -178,8 +181,8 @@ int deserialise(char * nom_de_fichier, Arbre * A){// choisir la séparation en f
 }
 
 
-
-void nom(char * fichier , char mot[MAX_MOT]){
+/*retire le format .saage*/
+static void nom(char * fichier , char mot[MAX_MOT]){
     
     int i;
     for(i = 0 ; i < MAX_MOT ; i++ ){

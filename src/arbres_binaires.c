@@ -132,6 +132,8 @@ Arbre cree_A_3(void){
 
 }
 
+/*pour traiter les blocs de zéro et de un et il renvoie
+ 1 si le bloc contient que des zéro ou des un , sinon on renvoie 0 */
 static int  Copier_Chiffre(char *mot , Memo * p){
     int copier = 0 , val = 0;
 
@@ -178,7 +180,8 @@ static int  Copier_Chiffre(char *mot , Memo * p){
 
 }
 
-
+/*saisi controlé d'une chaine renvoie 1 
+si la chaine est valide sinon 0*/
 static int lire(char * chaine , int longeur  , Memo * p){
     char *test;
     
@@ -204,11 +207,15 @@ static int lire(char * chaine , int longeur  , Memo * p){
     
 }
 
+/*on vérifie que le bloc de mot  contient “\n”. 
+Si c’est le cas , on renvoie 1 sinon on renvoie 0.*/
 static int verification_mot(char * mot){
     if( mot[strlen(mot) - 2] != '\\' && mot[strlen(mot) - 1] != 'n')
         return 0;
     return 1;
 }
+
+/*vide une chaine de caractère en y inserant que des '\0' */
 static void vider_memo(char * code , int taille){
     char * fin = code + taille;
     for(; code < fin ; code++){
@@ -216,6 +223,8 @@ static void vider_memo(char * code , int taille){
     }
 }
 
+/*création d'un code adapter pour construire l'arbre 
+renvoie 1 si le code a été crée sinon 0 en cas d'échec */
 static int creation_code_adapter_arbre(Memo * p){
     char ligne[MAX_MOT] ;
     int value_copie;
@@ -261,6 +270,9 @@ static int creation_code_adapter_arbre(Memo * p){
     return 1;
 }
 
+
+/*initialisation d'une chaine de caracère renvoie 
+1 si l'opération s'est bien déroulé sinon 0 en cas d'échec*/
 static int creation_Memo(Memo *p){
     p->code = (char *)calloc( MAX_MOT, sizeof(char));
     if(p->code){
@@ -277,7 +289,7 @@ static int creation_Memo(Memo *p){
 
 
 
-
+/*creation d'un arbre à partir d'une chaine de caractère renvoie un arbre sinon NULL en cas d'échec*/
 static Arbre construire_arbre_binaire(char * mot){
     mot = strtok(NULL , "*");
     if(mot){
