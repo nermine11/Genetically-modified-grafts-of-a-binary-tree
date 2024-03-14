@@ -107,7 +107,7 @@ int expansion(Arbre * a, Arbre b){
             if(!(ajout_fd(&g, *a)))
                 return 0;
 
-        copie(a, g);
+        *a = g;
         return 1;
     }
     return 1;
