@@ -10,7 +10,7 @@
 #define NOEUD_STRING_VIDE(mot)  ((strcmp(mot , " NULL") == 0)? 1: 0 )
 #define FORMAT(code , format) ((strstr(code , format ) )? 1 : 0)
 #define MOT_IDENTIQUE(mot , tokens)((strcmp(tokens , mot) == 0)? 1: 0 )
-
+#define VALEUR_ABSOLUE(val)((val < 0)? -1 * val : val)
 
 typedef struct _noeud {
     char *val ;
@@ -39,6 +39,4 @@ Arbre cree_A_3(void);
 int construit_arbre(Arbre *a);
 /*saisi du code à partir d'une phrase renvoie 1 si l'arbre a été crée sinon 0*/
 
-int reallouer(Memo * p);
-/*reallocation d'une chaine de caractére renvoie 1 si l'opération s'est effectuer sinon 0*/
 #endif
