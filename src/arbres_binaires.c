@@ -21,6 +21,24 @@ Noeud * alloue_noeud(char * s){
     return new_node;
 }
 
+/*reallocation d'une chaine de caractére renvoie 1 si l'opération s'est effectuer sinon 0*/
+static int reallouer(Memo * p){
+
+    char *t = (char *) malloc(p->taille_max *2 * sizeof(char) );
+    if(!p->code){
+        free(p->code);
+        fprintf(stderr , "problème d'allocation\n");
+        return 0;
+    } 
+    strcpy(t , p->code);
+    p->code = t;
+    t = NULL;
+    p->taille_max *= 2;
+    return 1;
+    
+}
+
+
 void liberer(Arbre * a){
     if(*a){
         liberer(&((*a)->fg));
@@ -91,6 +109,7 @@ Arbre cree_A_2(void){
         free(root);
         return NULL;
     }
+    return root;
 }
 
 
@@ -321,14 +340,14 @@ static Arbre construire_arbre_binaire(char * mot){
 }
 int construit_arbre(Arbre *a){
     Memo p;
-    
-    char ligne[MAX_MOT];
+
    
     creation_Memo(&p);
     char arret = 'n';
     int nb_echec = 0;
     while (!creation_code_adapter_arbre(&p)){
-        if(nb_echec == 5)printf("voulez-vous arrêter ?[O/N]\n");
+        if(nb_echec == 5)
+            printf("voulez-vous arrêter ?[O/N]\n");
 
         if(nb_echec == 5 && scanf("%c" , &arret) < 1)
             fflush(stdin);
