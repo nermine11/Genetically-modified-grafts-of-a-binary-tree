@@ -67,60 +67,6 @@ static Arbre construire_arbre_binaire(char * mot){
     return NULL;
 }
 
-/* écrit d’abord dans le fichier  le sous-arbre gauche ensuite le sous-arbre droit en respectant les conventions données*/
-static void affiche(Arbre A , FILE * out, int nombre_espace ){
-    int i ;
-    char espace[MAX_MOT] = "    ";
-    if(!A){
-        return;
-    }
-    
-    for(i = 1 ; i < nombre_espace ; i++){
-            strcat(espace , "    ");
-    } 
-    fprintf(out , "%sValeur : %s\n",espace , A->val);
-    
-   
-    if(A->fg){
-        fprintf(out ,"%sGauche :\n" , espace);
-        affiche(A->fg , out , nombre_espace + 1); 
-    } 
-    else if(!A->fg)
-        fprintf(out ,"%sGauche : NULL\n" ,espace);
-
-    if(A->fd ){
-        fprintf(out ,"%sDroite :\n", espace);
-        affiche(A->fd , out  , nombre_espace + 1);
-    }
-    else if(!A->fd)
-        fprintf(out ,"%sDroite : NULL\n",espace);
-
-        
-
-    
-}
-
-/*teste si le format (qu'il contient .saage) du fichier est correct il renvoie 1 sinon 0.*/
-static char * test_format(char * nom_de_fichier , int modifier , Memo *p){
-    int test = strlen(nom_de_fichier) < 6 && !FORMAT(nom_de_fichier , ".")? 1 : (!MOT_IDENTIQUE( nom_de_fichier + strlen(nom_de_fichier) - 6 , ".saage") && !FORMAT(nom_de_fichier , "."))? 1 :0;
-    creation_Memo(p);
-    strcpy(p->code , "data/");
-    if(test){
-        if(modifier){
-            strcat(p->code , nom_de_fichier);
-            fprintf(stderr, "Attention vous avez oublier de mettre le format .saage\n");
-            strcat(p->code , ".saage");
-        }
-        return (!modifier) ? NULL : p->code;
-    }
-    if((strlen(nom_de_fichier) >= 6 && MOT_IDENTIQUE( nom_de_fichier + strlen(nom_de_fichier) - 6 , ".saage"))){
-        strcat(p->code , nom_de_fichier);
-        return p->code;
-    }
-    return  NULL ;
-}
-
-
 
 int serialise(char * nom_de_fichier, Arbre A){
     Memo p;
