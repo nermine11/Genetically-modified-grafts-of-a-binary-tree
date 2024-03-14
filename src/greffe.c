@@ -52,18 +52,15 @@ int copie(Arbre * dest, Arbre source){
 /* ajoute sous arbre gauche de a à tous les noeuds de *g sans fg
 on retourne 0 si copie échoue sinon on retourne 1
 */
-static int ajout_fg(Arbre *g, Arbre a){
-    if(!a || !(*g))
-        return 1 ;
-    if(!((*g)->fg) && a->fg){
-        if(!(copie(&((*g)->fg), a->fg)))
+static int ajout_fg(Arbre *A, Arbre gauche){
+    if(!*A){
+        if(!copie(A ,gauche))
             return 0;
-        return 1;
+        return 1 ;
     }
-    int fg, fd;
-    fg = ajout_fg(&((*g)->fg),a);
-    fd = ajout_fg(&((*g)->fd),a);
-    return fg && fd;
+    int add = ajout_fg(&((*A)->fg) , gauche);
+  
+    return add;
 
 }
 
@@ -71,46 +68,106 @@ static int ajout_fg(Arbre *g, Arbre a){
 /* ajoute sous arbre droit de a à tous les noeuds de *g sans fd
 on retourne 0 si copie échoue sinon on retourne 1*/
 
-static int ajout_fd(Arbre *g, Arbre a){
+static int ajout_fd(Arbre *A, Arbre droite){
 
-    if(!a || !(*g))
-        return 1;
-    if(!((*g)->fd) && a->fd){
-        if(!(copie(&((*g)->fd), a->fd )))
+    if(!*A){
+        if(!copie(A ,droite ))
             return 0;
-        return 1;
+        return 1 ;
     }
-    int fg,fd;
-    fd = ajout_fd(&((*g)->fd),a);
-    fg = ajout_fd(&((*g)->fg),a);
-    return fg && fd;
+    int add = ajout_fd(&((*A)->fd) , droite);
+        
+    return add ;
 
 }
 
+static int Aux_expansion(Arbre * A, Arbre B , Arbre gauche , Arbre droite){
+    int cas = 1;
+
+    if(!(*A) || !B)
+        return 1;
+
+
+   int f_g = Aux_expansion(&((*A)->fg), B , gauche , droite);
+   int f_d = Aux_expansion(&((*A)->fd), B , gauche , droite);
+   
+        
+    if(MOT_IDENTIQUE((*A)->val, B->val) && (f_g && f_d)){
+        *A = NULL;
+        if(!copie(A , B)){
+            fprintf(stderr ,"il y a une erreur au niveau de la copie\n");
+            return -1;
+        }
+    }
+    else if( MOT_IDENTIQUE((*A)->val , B->val) && !(f_d && f_g)){
+        Arbre greffon = NULL;
+        gauche = ((*A)->fg)? (*A)->fg : NULL;
+        droite = ((*A)->fd)? (*A)->fd : NULL;
+        
+        if(!copie(&greffon , B)){//on copie l'arbre B dans le greffon
+            liberer(&greffon);
+            fprintf(stderr ,"il y a une erreur au niveau de la copie du greffon et de l'arbre B\n");
+            return -1;
+        }        
+        if(B->fg){/*on traite tous les cas pour le sous-arbre gauche*/
+            cas = ajout_fg(&(greffon->fg), gauche);
+            cas = (cas)? ajout_fd(&(greffon->fg) , droite) : 0;
+
+            if(!B->fd) 
+                cas = (cas)? ajout_fd(&(greffon->fd) , droite) : 0;
+            
+            if(B->fg->fd)
+                cas = (cas)? ajout_fg(&(greffon->fg->fd) , gauche) : 0;
+                
+            if(B->fg->fg)
+                cas = (cas)? ajout_fd(&(greffon->fg->fg) , droite) : 0;
+            
+            if(!cas){
+                liberer(&greffon);
+                fprintf(stderr ,"il y a une erreur de l'ajout dans l'arbre B->FG\n");
+                return -1;
+            }
+            
+
+        }
+       
+        if(B->fd){/*on traite tous les cas pour le sous-arbre droit*/
+            cas = ajout_fg(&(greffon->fd) , gauche);
+            cas = (cas)? ajout_fd(&(greffon->fd) , droite) : 0;
+
+            if(!B->fg) 
+                cas = (cas)? ajout_fg(&(greffon->fg) , droite) : 0;
+
+            if(B->fd->fg)
+                cas = (cas)? ajout_fd(&(greffon->fd->fg) , droite) : 0;
+
+            if(B->fd->fd)
+                cas = (cas)? ajout_fg(&(greffon->fd->fd) , droite) : 0;
+
+            if(!cas){//si l'un des ajout s'est pas bien effectuer 
+                liberer(&greffon);
+                fprintf(stderr ,"il y a une erreur de l'ajout dans l'arbre B->FD\n");
+                return -1;
+            }
+        }
+        if(!copie(A, greffon)){
+            liberer(&greffon);
+            fprintf(stderr ,"il y a une erreur au niveau de la copie du greffon et de l'arbre A\n");
+            return -1;
+        }
+        liberer(&greffon);
+
+    }
+   
+    return 0;
+
+  
+
+}
 int expansion(Arbre * a, Arbre b){
 
-    if(!(*a))
-        return 1;
-    int fg, fd;
-    fg = expansion(&((*a)->fg), b);
-    fd = expansion(&((*a)->fd), b);
-    if( !fg || !fd)
-        return 0;
-    if(!(strcmp((*a)->val, b->val))){
-        Arbre g = NULL;
-        if(!(copie(&g, b)))
-            return 0;
-        if((*a)->fg)
-            if(!(ajout_fg(&g, *a)))
-                return 0;
-        if((*a)->fd)
-            if(!(ajout_fd(&g, *a)))
-                return 0;
-
-        *a = g;
-        return 1;
-    }
-    return 1;
+   Arbre gauche = NULL , droite = NULL;
+   return Aux_expansion(a,  b , gauche , droite);
 }
 
 
