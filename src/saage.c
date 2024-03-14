@@ -1,19 +1,7 @@
 #include "saage.h"
 
 
-static int reallouer(Memo * p){
 
-    char *t = (char *) malloc(p->taille_max *2 * sizeof(char) );
-    if(!p->code){
-        free(p->code);
-        fprintf(stderr , "problème d'allocation\n");
-        return 0;
-    } 
-    strcpy(t , p->code);
-    p->code = t;
-    t = NULL;
-    p->taille_max *= 2;
-    return 1; 
 
 /*reallocation d'une chaine de caractére renvoie 1 si l'opération s'est effectuer sinon 0*/
 static int reallouer(Memo * p){
@@ -255,7 +243,7 @@ int deserialise(char * nom_de_fichier, Arbre * A){
 
 
     
-}
+
 
 
 /* écrit d’abord dans le fichier  le sous-arbre gauche ensuite le sous-arbre droit en respectant les conventions données*/
