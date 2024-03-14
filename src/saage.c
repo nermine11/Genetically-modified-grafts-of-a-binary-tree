@@ -13,7 +13,7 @@ static int reallouer(Memo * p){
     p->code = t;
     t = NULL;
     p->taille_max *= 2;
-    return 1;#include "saage.h"
+    return 1; 
 
 /*reallocation d'une chaine de caractére renvoie 1 si l'opération s'est effectuer sinon 0*/
 static int reallouer(Memo * p){

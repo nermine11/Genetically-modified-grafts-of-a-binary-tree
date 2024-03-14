@@ -96,7 +96,7 @@ int expansion(Arbre * a, Arbre b){
     fd = expansion(&((*a)->fd), b);
     if( !fg || !fd)
         return 0;
-    if(!(strcmp((*a)->s, b->s))){
+    if(!(strcmp((*a)->val, b->val))){
         Arbre g = NULL;
         if(!(copie(&g, b)))
             return 0;
@@ -107,10 +107,8 @@ int expansion(Arbre * a, Arbre b){
             if(!(ajout_fd(&g, *a)))
                 return 0;
 
-        copie(a , g);
+        *a = g;
         return 1;
     }
+    return 1;
 }
-
-
-
