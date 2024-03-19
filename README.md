@@ -1,5 +1,4 @@
-DESRAVINES TATIANA TP 9
-ELKILANI NARMIN TP 1
+
 
 
 # Genetically-modified-grafts-of-a-binary-tree
@@ -9,5 +8,3 @@ L'option -E n'effectue pas la greffe, mais permet de saisir un arbre sur le term
 
 Pour effectuer la greffe, vous devez utiliser l'option -G. Exemple d'utilisation : ./saage -G A_1.saage B.saage Un fichier du nom de A_1_apres_greffe_de_B.saage contiendra l'arbre B greffé dans l'arbre A_1 qui sera mis dans le dossier data/.
 
-La greffe n'est pas bien effectuée dans l'arbre A_3 , sinon le reste fonctionne.
- Les problèmes rencontrés sont le troisieme example A_3 d'expansion et certains cas d'erreurs à traiter dans la fonction construire_arbre()
